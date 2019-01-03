@@ -1,14 +1,14 @@
 package com.ecommerce.microcommerce.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Formula;
+
 import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Min;
 
 @Entity
-public class Product {
+public class ProductWithMarge {
     @Id
     @GeneratedValue
     private int id;
@@ -17,17 +17,7 @@ public class Product {
     @Min(value = 1)
     private int prix;
     //information que nous ne souhaitons pas exposer
-    private int prixAchat;
-    //Constructeur par défaut
-    public Product() {
-    }
-    //Constructeur test
-    public Product(int id, String nom, int prix, int prixAchat) {
-        this.id = id;
-        this.nom = nom;
-        this.prix = prix;
-        this.prixAchat = prixAchat;
-    }
+    private int marge;
 
     public int getId() {
         return id;
@@ -53,19 +43,19 @@ public class Product {
         this.prix = prix;
     }
 
-    public int getPrixAchat() {
-        return prixAchat;
+    public int getMarge() {
+        return marge;
     }
 
-    public void setPrixAchat(int prixAchat) {
-        this.prixAchat = prixAchat;
+    public void setMarge(int marge) {
+        this.marge = marge;
     }
 
-    @Override
-    public String toString(){
-        return "Product{"+
-                "id=" + id +
-                ", nom='"+ nom + '\'' +
-                ", prix=" + prix+ '}';
+
+    public ProductWithMarge(int id, String nom, int prix, int marge){
+        this.id=id;
+        this.nom=nom;
+        this.prix=prix;
+        this.marge=marge;
     }
 }

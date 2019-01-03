@@ -3,12 +3,16 @@ package com.ecommerce.microcommerce.web.controller;
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
+import org.hibernate.annotations.Formula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
+import java.text.MessageFormat;
 import java.util.List;
 
 @RestController
@@ -24,8 +28,10 @@ public class ProductController {
     public List<Product> listeProduits() {
         return productDao.findAll();
     }
-
-
+    @GetMapping(value ="/AdminProduits")
+    public List<Product> calculerMargeProduit() {
+        return productDao.calculerMargeProduit();
+    }
     //Récupérer un produit par son Id
     @GetMapping(value = "/Produits/{id}")
 
@@ -39,24 +45,24 @@ public class ProductController {
 
         return produit;
     }
-   /* @GetMapping(value = "test/produits/{prixLimit}")
+    @GetMapping(value = "test/produits/{prixLimit}")
 
     public List<Product> testeDeRequetes(@PathVariable int prixLimit) {
 
-        return productDao.findByPrixGreaterThan(400);
+        return productDao.chercherUnProduitCher(prixLimit);
 
-    }*/
-    @GetMapping(value = "test/produits/{recherche}")
+    }
+   /* @GetMapping(value = "test/produits/{recherche}")
 
     public List<Product> testeDeRequetes(@PathVariable String recherche) {
 
         return productDao.findByNomLike("%"+recherche+"%");
 
-    }
+    }*/
 
     //ajouter un produit
     @PostMapping(value = "/Produits")
-    public ResponseEntity<Void> ajouterProduit(@RequestBody Product product) {
+    public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
 
         Product productAdded =  productDao.save(product);
 
